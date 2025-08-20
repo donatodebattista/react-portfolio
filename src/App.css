@@ -1,0 +1,10 @@
+@font-face {
+    font-family: Code;
+    src: url('/fonts/SourceCodePro-Regular.ttf');
+}
+@import "tailwindcss";
+
+@theme{
+    --font-code: Code, "sans-serif";
+    --color-whiteText: oklch(0.9037 0 0) 
+}
