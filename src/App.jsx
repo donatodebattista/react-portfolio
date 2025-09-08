@@ -33,11 +33,11 @@ function App() {
         </section>
 
         <Marquee
-          gradient
-          gradientWidth={80}
-          gradientColor={[16, 16, 16]}
-          speed={60}
-          className="mt-12"
+          gradient={true} 
+          gradientWidth={80} 
+          gradientColor={["#101010"]} 
+          speed={80} 
+          className='mt-15'
         >
           {tecnologias.map((tech) => (
             <Tech key={tech.name} tech={tech} />
