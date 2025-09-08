@@ -27,7 +27,7 @@ function App() {
             <p className='text-sm sm:text-md md:text-lg text-[#8a8a8a98] mt-2'>Creando experiencias digitales con tecnologías de vanguardia</p>
           </div>
             <img 
-                  className='w-46 sm:w-48 md:w-56 ml-4 mt-4 sm:mt-0 rounded-full drop-shadow-[0_0_20px_rgba(255,255,255,0.25)]' 
+                  className='w-46 sm:w-48 md:w-56 sm:ml-4 mt-8 sm:mt-0 rounded-full drop-shadow-[0_0_20px_rgba(255,255,255,0.25)]' 
                   src="/images/doni3.jpeg" alt="Donato De Battista"
             />
         </section>
@@ -36,7 +36,7 @@ function App() {
           gradient={true} 
           gradientWidth={80} 
           gradientColor={["#101010"]} 
-          speed={80} 
+          speed={80}
           className='mt-15'
         >
           {tecnologias.map((tech) => (
