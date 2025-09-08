@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 export default function Navbar() {
   const [actual, setActual] = useState(1);
 
-  // flag para saber si estamos en un scroll manual programático
   const manualScrollRef = useRef(false);
   const manualTimeoutRef = useRef(null);
 
@@ -13,10 +12,8 @@ export default function Navbar() {
 
     const observer = new IntersectionObserver(
       () => {
-        // Si estamos en un scroll manual programático, ignoramos las entradas
         if (manualScrollRef.current) return;
 
-        // Calculamos la sección con mayor área visible
         let maxVisible = 0;
         let mostVisibleId = null;
 
@@ -37,7 +34,6 @@ export default function Navbar() {
         if (mostVisibleId !== null) {
           setActual(mostVisibleId);
         } else {
-          // fallback: sección más cercana al top
           let closestId = null;
           let closestDistance = Infinity;
           sections.forEach((sec) => {
@@ -60,7 +56,7 @@ export default function Navbar() {
 
     sections.forEach((sec) => observer.observe(sec));
 
-    // si el usuario interactúa con la rueda/touch/teclado, cancelamos el bloqueo
+
     const cancelManualLock = () => {
       if (manualTimeoutRef.current) {
         clearTimeout(manualTimeoutRef.current);
@@ -90,35 +86,33 @@ export default function Navbar() {
       return;
     }
 
-    // calculo de duración estimada según distancia (ms)
+
     const currentScroll = window.scrollY;
     const rect = el.getBoundingClientRect();
     const elAbsoluteTop = rect.top + window.scrollY;
-    // target scroll para centrar la sección aproximadamente
+
     const targetScroll =
       elAbsoluteTop - (window.innerHeight / 2 - rect.height / 2);
     const distance = Math.abs(targetScroll - currentScroll);
     const estimatedDuration = Math.min(1200, Math.max(400, distance * 0.5));
 
-    // activamos bloqueo para que el observer no "interfiera"
+
     manualScrollRef.current = true;
-    // feedback inmediato
+
     setActual(id);
 
-    // scroll suave centrando la sección
+
     el.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    // programamos liberar el bloqueo después de la duración estimada (+ pequeño margen)
+
     if (manualTimeoutRef.current) clearTimeout(manualTimeoutRef.current);
     manualTimeoutRef.current = setTimeout(() => {
       manualScrollRef.current = false;
       manualTimeoutRef.current = null;
-      // forzamos comprobación final (opcional) para sincronizar estado con observer
-      // si querés garantizar que actual coincide con la sección real, podríamos:
-      // setActual(id);
+
     }, Math.round(estimatedDuration + 120));
 
-    // actualizamos hash sin provocar salto adicional
+
     window.history.replaceState(null, "", `#${id}`);
   };
 
