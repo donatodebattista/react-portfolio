@@ -11,8 +11,6 @@ import { toast, ToastContainer } from 'react-toastify'
 
 function App() {
 
-
-
   return (
     <section className='bg-[#101010] font-code px-10'>
       <ToastContainer />
@@ -34,20 +32,18 @@ function App() {
             />
         </section>
 
-          <Marquee 
-            gradient={true} 
-            gradientWidth={60} 
-            gradientColor={["#101010"]}
-            speed={80}
-            className='mt-15'
-            >
-            
-              {tecnologias.map( (tech) => {
-                return(
-                  <Tech tech={tech}/>
-                )
-              })}
-          </Marquee>
+        <Marquee
+          gradient
+          gradientWidth={80}
+          gradientColor={[16, 16, 16]}
+          speed={60}
+          className="mt-12"
+        >
+          {tecnologias.map((tech) => (
+            <Tech key={tech.name} tech={tech} />
+          ))}
+        </Marquee>
+
 
         
         <div className='mt-14 sm:mt-30'>
