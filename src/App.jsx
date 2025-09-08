@@ -17,7 +17,7 @@ function App() {
       
       <div  className='max-w-5xl mx-auto space-y-8 pt-18 sm:pt-36 pb-14'>        
         <Navbar/>
-        <section id='1' className='text-left space-y-4 mt-4 items-center flex flex-col sm:flex-row justify-between'>
+        <section id='1' className='text-left space-y-4 items-center flex flex-col sm:flex-row justify-between'>
           <div  className='flex flex-col'>
             <p className='text-md md:text-lg text-[#f3f3f398] shiny-white'>Hola, soy Donato De Battista <span className='text-white'>👋</span></p>
             <h1 className='text-whiteText text-6xl sm:text-6xl font-code font-black'>
@@ -37,7 +37,7 @@ function App() {
           gradientWidth={80} 
           gradientColor={["#101010"]} 
           speed={80} 
-          className='mt-15'
+          className='mt-20'
         >
           {tecnologias.map((tech) => (
             <Tech key={tech.name} tech={tech} />
