@@ -1,9 +1,126 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react";
 
 export default function Navbar() {
-  const [actual, setActual] = useState(1)
+  const [actual, setActual] = useState(1);
 
-  
+  // flag para saber si estamos en un scroll manual programático
+  const manualScrollRef = useRef(false);
+  const manualTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll("section[id]"));
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      () => {
+        // Si estamos en un scroll manual programático, ignoramos las entradas
+        if (manualScrollRef.current) return;
+
+        // Calculamos la sección con mayor área visible
+        let maxVisible = 0;
+        let mostVisibleId = null;
+
+        sections.forEach((sec) => {
+          const rect = sec.getBoundingClientRect();
+          const visibleHeight = Math.max(
+            0,
+            Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0)
+          );
+
+          if (visibleHeight > maxVisible) {
+            maxVisible = visibleHeight;
+            const id = parseInt(sec.getAttribute("id"), 10);
+            if (!Number.isNaN(id)) mostVisibleId = id;
+          }
+        });
+
+        if (mostVisibleId !== null) {
+          setActual(mostVisibleId);
+        } else {
+          // fallback: sección más cercana al top
+          let closestId = null;
+          let closestDistance = Infinity;
+          sections.forEach((sec) => {
+            const rect = sec.getBoundingClientRect();
+            const distance = Math.abs(rect.top);
+            if (distance < closestDistance) {
+              closestDistance = distance;
+              const id = parseInt(sec.getAttribute("id"), 10);
+              if (!Number.isNaN(id)) closestId = id;
+            }
+          });
+          if (closestId !== null) setActual(closestId);
+        }
+      },
+      {
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+        rootMargin: "-30% 0px -30% 0px",
+      }
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+
+    // si el usuario interactúa con la rueda/touch/teclado, cancelamos el bloqueo
+    const cancelManualLock = () => {
+      if (manualTimeoutRef.current) {
+        clearTimeout(manualTimeoutRef.current);
+        manualTimeoutRef.current = null;
+      }
+      manualScrollRef.current = false;
+    };
+    window.addEventListener("wheel", cancelManualLock, { passive: true });
+    window.addEventListener("touchstart", cancelManualLock, { passive: true });
+    window.addEventListener("keydown", cancelManualLock, { passive: true });
+
+    return () => {
+      sections.forEach((sec) => observer.unobserve(sec));
+      observer.disconnect();
+      window.removeEventListener("wheel", cancelManualLock);
+      window.removeEventListener("touchstart", cancelManualLock);
+      window.removeEventListener("keydown", cancelManualLock);
+      if (manualTimeoutRef.current) clearTimeout(manualTimeoutRef.current);
+    };
+  }, []);
+
+  const handleNavClick = (e, id) => {
+    e.preventDefault();
+    const el = document.getElementById(String(id));
+    if (!el) {
+      setActual(id);
+      return;
+    }
+
+    // calculo de duración estimada según distancia (ms)
+    const currentScroll = window.scrollY;
+    const rect = el.getBoundingClientRect();
+    const elAbsoluteTop = rect.top + window.scrollY;
+    // target scroll para centrar la sección aproximadamente
+    const targetScroll =
+      elAbsoluteTop - (window.innerHeight / 2 - rect.height / 2);
+    const distance = Math.abs(targetScroll - currentScroll);
+    const estimatedDuration = Math.min(1200, Math.max(400, distance * 0.5));
+
+    // activamos bloqueo para que el observer no "interfiera"
+    manualScrollRef.current = true;
+    // feedback inmediato
+    setActual(id);
+
+    // scroll suave centrando la sección
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    // programamos liberar el bloqueo después de la duración estimada (+ pequeño margen)
+    if (manualTimeoutRef.current) clearTimeout(manualTimeoutRef.current);
+    manualTimeoutRef.current = setTimeout(() => {
+      manualScrollRef.current = false;
+      manualTimeoutRef.current = null;
+      // forzamos comprobación final (opcional) para sincronizar estado con observer
+      // si querés garantizar que actual coincide con la sección real, podríamos:
+      // setActual(id);
+    }, Math.round(estimatedDuration + 120));
+
+    // actualizamos hash sin provocar salto adicional
+    window.history.replaceState(null, "", `#${id}`);
+  };
 
   return (
     <nav className="fixed top-4 left-0 w-full bg-transparent z-50 flex justify-center">
@@ -13,39 +130,57 @@ export default function Navbar() {
             <div className="flex items-center gap-1">
               <span
                 className={
-                    "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " + 
-                    (actual === 1 ? "bg-lime-400" : "bg-transparent")
-                 }
+                  "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
+                  (actual === 1 ? "bg-lime-400" : "bg-transparent")
+                }
               />
-              <a className={actual === 1 ? "text-[#a476ffb6]" : "text-white"} href="#1" onClick={() => setActual(1)}>Home</a>
+              <a
+                href="#1"
+                onClick={(e) => handleNavClick(e, 1)}
+                className={actual === 1 ? "text-[#a476ffb6]" : "text-white"}
+              >
+                Home
+              </a>
             </div>
           </li>
 
-          <li> 
+          <li>
             <div className="flex items-center gap-1">
-                <span
-                  className={
-                    "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
-                    (actual === 2 ? "bg-lime-400" : "bg-transparent")
-                  }
-                />
-                <a className={actual === 2 ? "text-[#a476ffb6]" : "text-white"} href="#2" onClick={() => setActual(2)}>Proyectos</a>
+              <span
+                className={
+                  "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
+                  (actual === 2 ? "bg-lime-400" : "bg-transparent")
+                }
+              />
+              <a
+                href="#2"
+                onClick={(e) => handleNavClick(e, 2)}
+                className={actual === 2 ? "text-[#a476ffb6]" : "text-white"}
+              >
+                Proyectos
+              </a>
             </div>
           </li>
 
-          <li> 
+          <li>
             <div className="flex items-center gap-1">
-                <span
-                  className={
-                    "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
-                    (actual === 3 ? "bg-lime-400" : "bg-transparent")
-                  }
-                />
-                <a className={actual === 3 ? "text-[#a476ffb6]" : "text-white"} href="#3" onClick={() => setActual(3)}>Contacto</a>
+              <span
+                className={
+                  "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
+                  (actual === 3 ? "bg-lime-400" : "bg-transparent")
+                }
+              />
+              <a
+                href="#3"
+                onClick={(e) => handleNavClick(e, 3)}
+                className={actual === 3 ? "text-[#a476ffb6]" : "text-white"}
+              >
+                Contacto
+              </a>
             </div>
           </li>
         </ul>
       </div>
     </nav>
-  )
+  );
 }

@@ -11,19 +11,15 @@ import { toast, ToastContainer } from 'react-toastify'
 
 function App() {
 
-  const items = [
-    { label: "Home", href: "#" },
-    { label: "About", href: "#" },
-    { label: "Contact", href: "#" },
-  ];
+
 
   return (
     <section className='bg-[#101010] font-code px-10'>
       <ToastContainer />
       
-      <div id='1' className='max-w-5xl mx-auto space-y-8 pt-18 sm:pt-36 pb-14'>        
+      <div  className='max-w-5xl mx-auto space-y-8 pt-18 sm:pt-36 pb-14'>        
         <Navbar/>
-        <section className='text-left space-y-4 items-center mt-10 flex flex-col sm:flex-row justify-between'>
+        <section id='1' className='text-left space-y-4 mt-4 items-center flex flex-col sm:flex-row justify-between'>
           <div  className='flex flex-col'>
             <p className='text-md md:text-lg text-[#f3f3f398] shiny-white'>Hola, soy Donato De Battista <span className='text-white'>👋</span></p>
             <h1 className='text-whiteText text-6xl sm:text-6xl font-code font-black'>
@@ -56,7 +52,7 @@ function App() {
         
         <div className='mt-14 sm:mt-30'>
           <h1 className='text-3xl sm:text-4xl font-black text-whiteText'>Sobre mi</h1>
-          <p id='2' className='text-[#f3f3f398] mt-2 sm:mt-5 text-xs md:text-lg'>Hola! soy Donato De Battista, desarrollador web y analista de sistemas argentino. Me dedico a crear soluciones digitales con tecnologías modernas, abarcando tanto el back-end como el front-end.
+          <p className='text-[#f3f3f398] mt-2 sm:mt-5 text-xs md:text-lg'>Hola! soy Donato De Battista, desarrollador web y analista de sistemas argentino. Me dedico a crear soluciones digitales con tecnologías modernas, abarcando tanto el back-end como el front-end.
             Apasionado por construir productos funcionales, eficientes y con una gran experiencia de usuario. 
           </p>
         </div>
@@ -67,7 +63,7 @@ function App() {
           <h2 className='text-3xl sm:text-4xl font-black text-whiteText'>Proyectos</h2>
         </div>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <section id='2' className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <ProjectCard
             title="Linkora"
             imageUrl="images/projects-preview/linkora.png"
