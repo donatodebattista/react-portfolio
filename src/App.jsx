@@ -71,7 +71,7 @@ function App() {
             title="Flybondi challenge"
             imageUrl="images/projects-preview/flybondi.png"
             repoUrl="https://github.com/donatodebattista/flybondi-challenge"
-            siteUrl="https://beamish-sawine-fbfad0.netlify.app/"
+            siteUrl="https://flybondychallenge.netlify.app/"
             isDeployed={false}
           />
           <ProjectCard
