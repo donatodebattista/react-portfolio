@@ -66,13 +66,17 @@ function App() {
             repoUrl="https://github.com/donatodebattista/linkora-frontend"
             siteUrl="https://mylinkora.netlify.app"
             isDeployed={true}
+            isRepoDisabled={false}
+            isSiteDisabled={false}
           />
           <ProjectCard
             title="Flybondi challenge"
             imageUrl="images/projects-preview/flybondi.png"
             repoUrl="https://github.com/donatodebattista/flybondi-challenge"
             siteUrl="https://flybondychallenge.netlify.app/"
-            isDeployed={false}
+            isDeployed={true}
+            isRepoDisabled={false}
+            isSiteDisabled={false}
           />
           <ProjectCard
             title="Crypto Tracker"
@@ -80,6 +84,8 @@ function App() {
             repoUrl="https://github.com/usuario/proyecto1"
             siteUrl="https://charming-sopapillas-bc7b7e.netlify.app/"
             isDeployed={false}
+            isRepoDisabled={true}
+            isSiteDisabled={false}
           />
         </section>
         
