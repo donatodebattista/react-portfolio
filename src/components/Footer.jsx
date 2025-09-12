@@ -7,32 +7,29 @@ export default function Footer() {
   return (
     <footer className='w-full'>
         <div className="flex flex-row gap-3 justify-center my-4 sm:mb-10 sm:mt-6">
-          <a
-            href="https://github.com/donatodebattista"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Ir a github"
-          >
-            <ButtonLink icon={BsGithub} />
-          </a>
+            
+            <ButtonLink 
+              icon={BsGithub} 
+              href="https://github.com/donatodebattista"
+              title="Visitar Github"
+              isDisabled={false}
+            />
 
-          <a
-            href="https://www.linkedin.com/in/donato-de-battista-5a7486308/"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Ir a Linkedin"
-          >
-            <ButtonLink icon={FaLinkedin}/>
-          </a>
+            <ButtonLink 
+              icon={FaLinkedin}
+              href="https://www.linkedin.com/in/donato-de-battista-5a7486308/"
+              title="Visitar Linkedin"
+              isDisabled={false}
+            />
 
-            <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=donatodebattista16@gmail.com&su=Hola%20Donato!&body="
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Enviar correo a Gmail"
-            >
-            <ButtonLink icon={SiGmail}/>
-          </a>          
+
+            <ButtonLink 
+              icon={SiGmail}
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=donatodebattista16@gmail.com&su=Hola%20Donato!&body="
+              title="Enviar correo a Gmail"
+              isDisabled={false}
+            />
+
         </div>
         <div className='max-w-5xl mx-auto'>
             <p className='text-[#5a5a5a] text-xs text-center'>Copyright © 2025 Donato De Battista. Todos los derechos reservados.</p>
