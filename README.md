@@ -19,7 +19,7 @@ Portafolio personal desarrollado con **React + Vite** para mostrar mis proyectos
 
 ## 🖼 Vista previa
 
-![Portfolio Screenshot](./assets/screenshot.png)
+![Portfolio Screenshot](./src/assets/screenshot.png)
 
 ---
 
