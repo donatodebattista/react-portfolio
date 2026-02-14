@@ -13,13 +13,13 @@ Portafolio personal desarrollado con **React + Vite** para mostrar mis proyectos
 ## 🌐 Sitio Web
 
 🔗 **Ver Portfolio:**  
-👉 https://react-portfolio-nine-liart.vercel.app/
+👉 https://donatodebattista.vercel.app/
 
 ---
 
 ## 🖼 Vista previa
 
-![Portfolio Screenshot](./assets/screenshot.png)
+![Portfolio Screenshot](./src/assets/screenshot.png)
 
 ---
 
