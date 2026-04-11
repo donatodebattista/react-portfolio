@@ -1,10 +1,110 @@
-@font-face {
-    font-family: Code;
-    src: url('/fonts/SourceCodePro-Regular.ttf');
-}
 @import "tailwindcss";
 
-@theme{
-    --font-code: Code, "sans-serif";
-    --color-whiteText: oklch(0.9037 0 0) 
+/* ─── Design Tokens ─────────────────────────────────────── */
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-bg: #09090f;
+  --color-surface: rgba(255,255,255,0.04);
+  --color-border: rgba(255,255,255,0.08);
+  --color-accent: #a476ff;
+  --color-accent-dim: rgba(164,118,255,0.18);
+  --color-text: oklch(0.90 0 0);
+  --color-text-muted: rgba(200,200,220,0.55);
+}
+
+/* ─── Tailwind theme overrides ───────────────────────────── */
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --color-whiteText: oklch(0.9037 0 0);
+}
+
+/* ─── Base ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Custom scrollbar ───────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(164,118,255,0.3); border-radius: 3px; }
+
+/* ─── Ambient background gradient ───────────────────────── */
+.ambient-bg {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% -5%,  rgba(130, 80, 255, 0.22) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 30% at 85% 90%,  rgba(80, 130, 255, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 25% at 10% 80%,  rgba(164,118,255, 0.07) 0%, transparent 60%);
+}
+
+/* ─── Glassmorphism utility ─────────────────────────────── */
+.glass {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ─── Glow text effect ───────────────────────────────────── */
+.shiny-white {
+  background: linear-gradient(90deg, #fff 20%, #a476ff 50%, #fff 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 5s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+/* ─── Avatar glow ring ───────────────────────────────────── */
+.avatar-glow {
+  box-shadow: 0 0 0 3px rgba(164,118,255,0.30), 0 0 40px rgba(164,118,255,0.20);
+}
+
+/* ─── Fade-up animation ──────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up        { animation: fadeUp 0.6s ease both; }
+.animate-fade-up-d1     { animation: fadeUp 0.6s 0.1s ease both; }
+.animate-fade-up-d2     { animation: fadeUp 0.6s 0.2s ease both; }
+.animate-fade-up-d3     { animation: fadeUp 0.6s 0.35s ease both; }
+.animate-fade-up-d4     { animation: fadeUp 0.6s 0.5s ease both; }
+
+/* ─── Section dividers ───────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+  border: none;
+  margin-block: 3rem;
+}
+
+/* ─── Tech chip ──────────────────────────────────────────── */
+.tech-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s;
+}
+.tech-chip:hover {
+  border-color: rgba(164,118,255,0.4);
+  color: #fff;
 }
