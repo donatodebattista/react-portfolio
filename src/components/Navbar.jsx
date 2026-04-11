@@ -1,12 +1,16 @@
 import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 export default function Navbar() {
   const [actual, setActual] = useState(1);
+  const [mounted, setMounted] = useState(false);
 
   const manualScrollRef = useRef(false);
   const manualTimeoutRef = useRef(null);
 
   useEffect(() => {
+    setMounted(true);
+
     const sections = Array.from(document.querySelectorAll("section[id]"));
     if (sections.length === 0) return;
 
@@ -56,7 +60,6 @@ export default function Navbar() {
 
     sections.forEach((sec) => observer.observe(sec));
 
-
     const cancelManualLock = () => {
       if (manualTimeoutRef.current) {
         clearTimeout(manualTimeoutRef.current);
@@ -81,100 +84,79 @@ export default function Navbar() {
   const handleNavClick = (e, id) => {
     e.preventDefault();
     const el = document.getElementById(String(id));
-    if (!el) {
-      setActual(id);
-      return;
-    }
-
+    if (!el) { setActual(id); return; }
 
     const currentScroll = window.scrollY;
     const rect = el.getBoundingClientRect();
     const elAbsoluteTop = rect.top + window.scrollY;
-
-    const targetScroll =
-      elAbsoluteTop - (window.innerHeight / 2 - rect.height / 2);
+    const targetScroll = elAbsoluteTop - (window.innerHeight / 2 - rect.height / 2);
     const distance = Math.abs(targetScroll - currentScroll);
     const estimatedDuration = Math.min(1200, Math.max(400, distance * 0.5));
 
-
     manualScrollRef.current = true;
-
     setActual(id);
-
-
     el.scrollIntoView({ behavior: "smooth", block: "center" });
-
 
     if (manualTimeoutRef.current) clearTimeout(manualTimeoutRef.current);
     manualTimeoutRef.current = setTimeout(() => {
       manualScrollRef.current = false;
       manualTimeoutRef.current = null;
-
     }, Math.round(estimatedDuration + 120));
-
 
     window.history.replaceState(null, "", `#${id}`);
   };
 
+  const links = [
+    { id: 1, label: "Home" },
+    { id: 2, label: "Proyectos" },
+    { id: 3, label: "Contacto" },
+  ];
+
   return (
-    <nav className="fixed top-4 left-0 w-full bg-transparent z-50 flex justify-center">
-      <div className="backdrop-blur-xl rounded-lg sm:rounded-2xl px-8 py-3 sm:py-4 mt-4 flex justify-center items-center">
-        <ul className="flex flex-row gap-x-6 sm:gap-x-12 text-white font-code text-sm sm:text-lg">
-          <li>
-            <div className="flex items-center gap-1">
-              <span
-                className={
-                  "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
-                  (actual === 1 ? "bg-lime-400" : "bg-transparent")
-                }
-              />
-              <a
-                href="#1"
-                onClick={(e) => handleNavClick(e, 1)}
-                className={actual === 1 ? "text-[#a476ffb6]" : "text-white"}
-              >
-                Home
-              </a>
-            </div>
-          </li>
-
-          <li>
-            <div className="flex items-center gap-1">
-              <span
-                className={
-                  "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
-                  (actual === 2 ? "bg-lime-400" : "bg-transparent")
-                }
-              />
-              <a
-                href="#2"
-                onClick={(e) => handleNavClick(e, 2)}
-                className={actual === 2 ? "text-[#a476ffb6]" : "text-white"}
-              >
-                Proyectos
-              </a>
-            </div>
-          </li>
-
-          <li>
-            <div className="flex items-center gap-1">
-              <span
-                className={
-                  "inline-block w-1 sm:w-2 h-1 sm:h-2 rounded-full transition-colors duration-200 mr-1 " +
-                  (actual === 3 ? "bg-lime-400" : "bg-transparent")
-                }
-              />
-              <a
-                href="#3"
-                onClick={(e) => handleNavClick(e, 3)}
-                className={actual === 3 ? "text-[#a476ffb6]" : "text-white"}
-              >
-                Contacto
-              </a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <AnimatePresence>
+      {mounted && (
+        <motion.nav
+          className="fixed top-0 left-0 w-full z-50 flex justify-center pt-5"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <div
+            className="glass rounded-2xl px-6 py-3 flex justify-center items-center"
+            style={{ boxShadow: "0 4px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)" }}
+          >
+            <ul className="flex flex-row gap-x-2 sm:gap-x-3 text-white font-sans text-sm sm:text-base">
+              {links.map(({ id, label }) => (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    onClick={(e) => handleNavClick(e, id)}
+                    className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors duration-200"
+                    style={{ color: actual === id ? "#c4a4ff" : "rgba(255,255,255,0.65)" }}
+                  >
+                    {actual === id && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        className="absolute inset-0 rounded-lg"
+                        style={{ background: "rgba(164,118,255,0.15)" }}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <span
+                      className="inline-block w-1.5 h-1.5 rounded-full transition-all duration-300"
+                      style={{
+                        background: actual === id ? "#86efac" : "transparent",
+                        boxShadow: actual === id ? "0 0 6px #86efac" : "none",
+                      }}
+                    />
+                    <span className="relative z-10 font-medium">{label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.nav>
+      )}
+    </AnimatePresence>
   );
 }
