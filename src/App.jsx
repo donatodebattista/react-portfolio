@@ -96,13 +96,13 @@ function App() {
             isSiteDisabled={false}
           />
           <ProjectCard
-            title="Crypto Tracker"
-            imageUrl="images/projects-preview/cryptoTracker.png"
-            repoUrl="https://github.com/usuario/proyecto1"
-            siteUrl="https://charming-sopapillas-bc7b7e.netlify.app/"
+            title="GeoTurismo"
+            imageUrl="images/projects-preview/geoturismo.png"
+            repoUrl="https://github.com/donatodebattista/georedis-api"
+            siteUrl=""
             isDeployed={false}
-            isRepoDisabled={true}
-            isSiteDisabled={false}
+            isRepoDisabled={false}
+            isSiteDisabled={true}
           />
         </section>
 
