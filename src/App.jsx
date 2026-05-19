@@ -90,7 +90,7 @@ function App() {
             title="Flybondi challenge"
             imageUrl="images/projects-preview/flybondi.png"
             repoUrl="https://github.com/donatodebattista/flybondi-challenge"
-            siteUrl="https://flybondychallenge.netlify.app/"
+            siteUrl="https://flybondichallenge.netlify.app/"
             isDeployed={true}
             isRepoDisabled={false}
             isSiteDisabled={false}
